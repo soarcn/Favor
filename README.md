@@ -4,7 +4,33 @@ Favor
 
 One of the most easiest way to use sharepreference in android
 
+Under development
+
 This library works on android 2.2+
+
+How to use this library
+======
+
+1 Define the interface
+
+```java 
+public interface Profile {
+
+    @Favor("city")
+    @Default("Sydney")
+    String city();
+
+    @Favor()
+    void setAge(int age);
+}
+```
+
+2 The FavorAdatper class generates an implementation of the interface.
+
+```java 
+profile = new FavorAdapter.Builder(getContext()).build().create(Profile.class);
+profile.setAge(32);
+```
 
 
 

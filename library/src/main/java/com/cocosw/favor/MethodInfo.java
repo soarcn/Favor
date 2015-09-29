@@ -13,7 +13,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 
 /**
- * NBN Atlas Wayfinder
  * <p/>
  * Created by kai on 25/09/15.
  */

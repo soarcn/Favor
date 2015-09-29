@@ -8,7 +8,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * NBN Atlas Wayfinder
  * <p/>
  * Created by kai on 29/09/15.
  */

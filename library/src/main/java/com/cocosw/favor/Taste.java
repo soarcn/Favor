@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 
 /**
- * NBN Atlas Wayfinder
  * <p/>
  * Created by kai on 29/09/15.
  */

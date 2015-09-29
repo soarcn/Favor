@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * NBN Atlas Wayfinder
  * <p/>
  * Created by kai on 25/09/15.
  */

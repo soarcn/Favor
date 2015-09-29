@@ -5,7 +5,6 @@ import com.f2prateek.rx.preferences.Preference;
 import java.util.Set;
 
 /**
- * NBN Atlas Wayfinder
  * <p/>
  * Created by kai on 25/09/15.
  */
