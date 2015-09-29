@@ -19,39 +19,24 @@ public class FavorAdapter {
 
     private final SharedPreferences sp;
 
-    private final Map<Class<?>, Map<Method, RestMethodInfo>> serviceMethodInfoCache =
+    private final Map<Class<?>, Map<Method, MethodInfo>> serviceMethodInfoCache =
             new LinkedHashMap<>();
+    private String prefix;
+    private boolean log;
 
 
-    public FavorAdapter(Context context) {
-        sp = PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    public FavorAdapter(SharedPreferences sp) {
+    private FavorAdapter(SharedPreferences sp) {
         this.sp = sp;
     }
 
-    static RestMethodInfo getMethodInfo(Map<Method, RestMethodInfo> cache, Method method, SharedPreferences sp) {
+    private static MethodInfo getMethodInfo(Map<Method, MethodInfo> cache, Method method, SharedPreferences sp, String prefix) {
         synchronized (cache) {
-            RestMethodInfo methodInfo = cache.get(method);
+            MethodInfo methodInfo = cache.get(method);
             if (methodInfo == null) {
-                methodInfo = new RestMethodInfo(method, sp);
-
+                methodInfo = new MethodInfo(method, sp, prefix);
                 cache.put(method, methodInfo);
             }
             return methodInfo;
-        }
-    }
-
-    static <T> void validateServiceClass(Class<T> service) {
-        if (!service.isInterface()) {
-            throw new IllegalArgumentException("Only interface endpoint definitions are supported.");
-        }
-        // Prevent API interfaces from extending other interfaces. This not only avoids a bug in
-        // Android (http://b.android.com/58753) but it forces composition of API declarations which is
-        // the recommended pattern.
-        if (service.getInterfaces().length > 0) {
-            throw new IllegalArgumentException("Interface definitions must not extend other interfaces.");
         }
     }
 
@@ -62,12 +47,27 @@ public class FavorAdapter {
     public <T> T create(Class<T> service) {
         validateServiceClass(service);
         return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[]{service},
-                new RestHandler(getMethodInfoCache(service)));
+                new FavorHandler(getMethodInfoCache(service)));
     }
 
-    Map<Method, RestMethodInfo> getMethodInfoCache(Class<?> service) {
+    void enableLog(boolean enable) {
+        this.log = enable;
+    }
+
+    private static <T> void validateServiceClass(Class<T> service) {
+        if (!service.isInterface()) {
+            throw new IllegalArgumentException("Only interface endpoint definitions are supported.");
+        }
+        if (service.getInterfaces().length > 0) {
+            throw new IllegalArgumentException("Interface definitions must not extend other interfaces.");
+        }
+    }
+
+
+
+    private Map<Method, MethodInfo> getMethodInfoCache(Class<?> service) {
         synchronized (serviceMethodInfoCache) {
-            Map<Method, RestMethodInfo> methodInfoCache = serviceMethodInfoCache.get(service);
+            Map<Method, MethodInfo> methodInfoCache = serviceMethodInfoCache.get(service);
             if (methodInfoCache == null) {
                 methodInfoCache = new LinkedHashMap<>();
                 serviceMethodInfoCache.put(service, methodInfoCache);
@@ -76,10 +76,11 @@ public class FavorAdapter {
         }
     }
 
-    private class RestHandler implements InvocationHandler {
-        private final Map<Method, RestMethodInfo> methodDetailsCache;
 
-        RestHandler(Map<Method, RestMethodInfo> methodDetailsCache) {
+    private class FavorHandler implements InvocationHandler {
+        private final Map<Method, MethodInfo> methodDetailsCache;
+
+        FavorHandler(Map<Method, MethodInfo> methodDetailsCache) {
             this.methodDetailsCache = methodDetailsCache;
         }
 
@@ -87,22 +88,15 @@ public class FavorAdapter {
         @Override
         public Object invoke(Object proxy, Method method, final Object[] args)
                 throws Throwable {
-            // If the method is a method from Object then defer to normal invocation.
             if (method.getDeclaringClass() == Object.class) {
                 return method.invoke(this, args);
             }
 
-            // Load or create the details cache for the current method.
-            final RestMethodInfo methodInfo = getMethodInfo(methodDetailsCache, method, sp);
+            final MethodInfo methodInfo = getMethodInfo(methodDetailsCache, method, sp,prefix);
             methodInfo.init();
 
-            if (methodInfo.responseType == RestMethodInfo.ResponseType.VOID) {
-                //Setter
-                //执行 sp相关操作；
-                // methodInfo.
+            if (methodInfo.responseType == MethodInfo.ResponseType.VOID) {
                 return methodInfo.set(args);
-
-
             } else {
                 //Getter
                 switch (methodInfo.responseType) {
@@ -113,8 +107,32 @@ public class FavorAdapter {
                 }
             }
         }
+    }    
 
+
+    public static class Builder {
+
+        private String prefix;
+        private SharedPreferences sp;
+
+        public Builder (Context context) {
+            sp = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+
+        public Builder (SharedPreferences sp) {
+            this.sp = sp;
+        }
+
+        private Builder prefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public FavorAdapter build() {
+            FavorAdapter adapter = new FavorAdapter(sp);
+            adapter.prefix = prefix;
+            return adapter;
+        }
     }
-
 
 }

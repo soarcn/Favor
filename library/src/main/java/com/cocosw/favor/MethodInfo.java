@@ -1,6 +1,7 @@
 package com.cocosw.favor;
 
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
@@ -11,14 +12,13 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 
-import rx.Observable;
-
 /**
  * NBN Atlas Wayfinder
  * <p/>
  * Created by kai on 25/09/15.
  */
-public class RestMethodInfo {
+
+class MethodInfo {
 
     static final boolean HAS_RX_JAVA = hasRxJavaOnClasspath();
     final Method method;
@@ -26,6 +26,7 @@ public class RestMethodInfo {
     final ResponseType responseType;
     final boolean isObservable;
     private final SharedPreferences sp;
+    private final String prefix;
     boolean loaded = false;
     Type responseObjectType;
     String key;
@@ -35,9 +36,10 @@ public class RestMethodInfo {
     private boolean commit;
     private Type FavorType;
 
-    RestMethodInfo(Method method, SharedPreferences sp) {
+    MethodInfo(Method method, SharedPreferences sp, String prefix) {
         this.method = method;
         this.sp = sp;
+        this.prefix = prefix;
         responseType = parseResponseType();
         isObservable = (responseType == ResponseType.OBSERVABLE);
     }
@@ -100,6 +102,9 @@ public class RestMethodInfo {
                 if (key.trim().length() == 0) {
                     key = getKeyFromMethod(method);
                 }
+                if (!TextUtils.isEmpty(prefix)) {
+                    key = prefix + key;
+                }
             } else if (annotationType == Default.class) {
                 defaultValues = ((Default) methodAnnotation).value();
             } else if (annotationType == Commit.class) {
@@ -115,9 +120,6 @@ public class RestMethodInfo {
         return value;
     }
 
-    /**
-     * Loads {@link #responseObjectType}. Returns {@code true} if method is synchronous.
-     */
     private ResponseType parseResponseType() {
         Type returnType = method.getGenericReturnType();
         Type[] parameterTypes = method.getGenericParameterTypes();
@@ -170,11 +172,11 @@ public class RestMethodInfo {
         return hasReturnType ? ResponseType.OBJECT : ResponseType.VOID;
     }
 
-    public Object get() {
+    Object get() {
         return taste.get();
     }
 
-    public Object set(Object[] args) {
+    Object set(Object[] args) {
         if (commit)
             taste.commit(args[0]);
         else
@@ -188,16 +190,4 @@ public class RestMethodInfo {
         OBJECT
     }
 
-    /**
-     * Indirection to avoid log complaints if RxJava isn't present.
-     */
-    private static final class RxSupport {
-        public static boolean isObservable(Class rawType) {
-            return rawType == Observable.class;
-        }
-
-        public static Type getObservableType(Type contextType, Class contextRawType) {
-            return Types.getSupertype(contextType, contextRawType, Observable.class);
-        }
-    }
 }

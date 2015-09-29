@@ -22,7 +22,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     protected void setUp() throws Exception {
         super.setUp();
         createApplication();
-        profile = new FavorAdapter(getContext()).create(Profile.class);
+        profile = new FavorAdapter.Builder(getContext()).build().create(Profile.class);
     }
 
     public void testGetValue() {
