@@ -1,8 +1,11 @@
 package com.cocosw.favor;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Build;
+
+import java.util.Set;
 
 /**
  * <p/>
@@ -73,7 +76,7 @@ abstract class Taste {
 
         @Override
         Object get() {
-            return sp.getInt(key, Integer.valueOf(defaultValue[0]));
+            return sp.getInt(key, defaultValue[0]==null?0:Integer.valueOf(defaultValue[0]));
         }
 
         @SuppressLint("CommitPrefEdits")
@@ -97,7 +100,7 @@ abstract class Taste {
 
         @Override
         Object get() {
-            return sp.getBoolean(key, Boolean.valueOf(defaultValue[0]));
+            return sp.getBoolean(key, defaultValue[0]==null?false:Boolean.valueOf(defaultValue[0]));
         }
 
         @SuppressLint("CommitPrefEdits")
@@ -120,13 +123,60 @@ abstract class Taste {
 
         @Override
         Object get() {
-            return sp.getFloat(key, Float.valueOf(defaultValue[0]));
+            return sp.getFloat(key, defaultValue[0]==null?0:Float.valueOf(defaultValue[0]));
         }
 
         @SuppressLint("CommitPrefEdits")
         @Override
         void commit(Object object) {
             sp.edit().putFloat(key, (Float) object).commit();
+        }
+    }
+
+    static class LongTaste extends Taste {
+        LongTaste(SharedPreferences sp, String key, String[] defaultValue) {
+            super(sp, key, defaultValue);
+        }
+
+        @SuppressLint("CommitPrefEdits")
+        @Override
+        void set(Object object) {
+            save(sp.edit().putLong(key, (Long) object));
+        }
+
+        @Override
+        Object get() {
+            return sp.getLong(key, defaultValue[0]==null?0:Long.valueOf(defaultValue[0]));
+        }
+
+        @SuppressLint("CommitPrefEdits")
+        @Override
+        void commit(Object object) {
+            sp.edit().putLong(key, (Long) object).commit();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    static class StringSetTaste extends Taste {
+        StringSetTaste(SharedPreferences sp, String key, String[] defaultValue) {
+            super(sp, key, defaultValue);
+        }
+
+        @SuppressLint("CommitPrefEdits")
+        @Override
+        void set(Object object) {
+            save(sp.edit().putStringSet(key, (Set<String>) object));
+        }
+
+        @Override
+        Object get() {
+            return sp.getLong(key, Long.valueOf(defaultValue[0]));
+        }
+
+        @SuppressLint("CommitPrefEdits")
+        @Override
+        void commit(Object object) {
+            sp.edit().putLong(key, (Long) object).commit();
         }
     }
 

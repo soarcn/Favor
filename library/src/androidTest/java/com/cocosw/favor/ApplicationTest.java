@@ -31,14 +31,27 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testPutValue() {
-        profile.setAge(10);
-        Assert.assertEquals(10, sp().getInt("age", 0));
+        profile.setHeight(120);
+        Assert.assertEquals(120, sp().getInt("height", 0));
+        assertEquals(120,profile.getHeight());
     }
 
 
     public void testDefaultValue() {
         remove("city");
         Assert.assertEquals("Sydney", profile.city());
+    }
+
+    public void testLongValue() {
+        profile.setDistance(1000);
+        Assert.assertEquals(1000, sp().getLong("distance", 0));
+        Assert.assertEquals(1000, profile.getDistance());
+    }
+
+    public void testFloatValue() {
+        profile.setAge(10.5f);
+        Assert.assertEquals(10.5f, sp().getFloat("age", 0));
+        assertEquals(10.5f, profile.getAge());
     }
 
 

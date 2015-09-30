@@ -78,17 +78,6 @@ class MethodInfo {
     synchronized void init() {
         if (loaded) return;
         parseMethodAnnotations();
-        if (FavorType == String.class) {
-            taste = new Taste.StringTaste(sp, key, defaultValues);
-        } else if (FavorType == boolean.class) {
-            taste = new Taste.BoolTaste(sp, key, defaultValues);
-        } else if (FavorType == int.class) {
-            taste = new Taste.IntTaste(sp, key, defaultValues);
-        } else if (FavorType == float.class) {
-            taste = new Taste.FloatTaste(sp, key, defaultValues);
-        } else {
-            taste = new Taste.EmptyTaste(sp, key, defaultValues);
-        }
         loaded = true;
     }
 
@@ -109,6 +98,20 @@ class MethodInfo {
             } else if (annotationType == Commit.class) {
                 commit = true;
             }
+        }
+
+        if (FavorType == String.class) {
+            taste = new Taste.StringTaste(sp, key, defaultValues);
+        } else if (FavorType == boolean.class) {
+            taste = new Taste.BoolTaste(sp, key, defaultValues);
+        } else if (FavorType == int.class) {
+            taste = new Taste.IntTaste(sp, key, defaultValues);
+        } else if (FavorType == float.class) {
+            taste = new Taste.FloatTaste(sp, key, defaultValues);
+        } else if (FavorType == long.class) {
+            taste = new Taste.LongTaste(sp,key,defaultValues);
+        } else {
+            taste = new Taste.EmptyTaste(sp, key, defaultValues);
         }
     }
 
