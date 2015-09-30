@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -22,35 +23,22 @@ public class FavorAdapter {
             new LinkedHashMap<>();
     private String prefix;
     private boolean log;
+    private boolean allFavor;
 
 
     private FavorAdapter(SharedPreferences sp) {
         this.sp = sp;
     }
 
-    private static MethodInfo getMethodInfo(Map<Method, MethodInfo> cache, Method method, SharedPreferences sp, String prefix) {
+    private static MethodInfo getMethodInfo(Map<Method, MethodInfo> cache, Method method, SharedPreferences sp, String prefix, boolean allFavor) {
         synchronized (cache) {
             MethodInfo methodInfo = cache.get(method);
             if (methodInfo == null) {
-                methodInfo = new MethodInfo(method, sp, prefix);
+                methodInfo = new MethodInfo(method, sp, prefix, allFavor);
                 cache.put(method, methodInfo);
             }
             return methodInfo;
         }
-    }
-
-    /**
-     * Create an implementation of the API defined by the specified {@code service} interface.
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T create(Class<T> service) {
-        validateServiceClass(service);
-        return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[]{service},
-                new FavorHandler(getMethodInfoCache(service)));
-    }
-
-    void enableLog(boolean enable) {
-        this.log = enable;
     }
 
     private static <T> void validateServiceClass(Class<T> service) {
@@ -62,7 +50,23 @@ public class FavorAdapter {
         }
     }
 
+    /**
+     * Create an implementation of the API defined by the specified {@code service} interface.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T create(Class<T> service) {
+        validateServiceClass(service);
+        for (Annotation annotation : service.getDeclaredAnnotations()) {
+            if (annotation.annotationType() == AllFavor.class)
+                allFavor = true;
+        }
+        return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[]{service},
+                new FavorHandler(getMethodInfoCache(service)));
+    }
 
+    void enableLog(boolean enable) {
+        this.log = enable;
+    }
 
     private Map<Method, MethodInfo> getMethodInfoCache(Class<?> service) {
         synchronized (serviceMethodInfoCache) {
@@ -75,6 +79,30 @@ public class FavorAdapter {
         }
     }
 
+    public static class Builder {
+
+        private String prefix;
+        private SharedPreferences sp;
+
+        public Builder(Context context) {
+            sp = PreferenceManager.getDefaultSharedPreferences(context);
+        }
+
+        public Builder(SharedPreferences sp) {
+            this.sp = sp;
+        }
+
+        private Builder prefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public FavorAdapter build() {
+            FavorAdapter adapter = new FavorAdapter(sp);
+            adapter.prefix = prefix;
+            return adapter;
+        }
+    }
 
     private class FavorHandler implements InvocationHandler {
         private final Map<Method, MethodInfo> methodDetailsCache;
@@ -91,7 +119,7 @@ public class FavorAdapter {
                 return method.invoke(this, args);
             }
 
-            final MethodInfo methodInfo = getMethodInfo(methodDetailsCache, method, sp,prefix);
+            final MethodInfo methodInfo = getMethodInfo(methodDetailsCache, method, sp, prefix, allFavor);
             methodInfo.init();
 
             if (methodInfo.responseType == MethodInfo.ResponseType.VOID) {
@@ -105,32 +133,6 @@ public class FavorAdapter {
                         return methodInfo.get();
                 }
             }
-        }
-    }    
-
-
-    public static class Builder {
-
-        private String prefix;
-        private SharedPreferences sp;
-
-        public Builder (Context context) {
-            sp = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-
-        public Builder (SharedPreferences sp) {
-            this.sp = sp;
-        }
-
-        private Builder prefix(String prefix) {
-            this.prefix = prefix;
-            return this;
-        }
-
-        public FavorAdapter build() {
-            FavorAdapter adapter = new FavorAdapter(sp);
-            adapter.prefix = prefix;
-            return adapter;
         }
     }
 

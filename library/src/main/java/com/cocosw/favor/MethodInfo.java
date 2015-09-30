@@ -26,6 +26,7 @@ class MethodInfo {
     final boolean isObservable;
     private final SharedPreferences sp;
     private final String prefix;
+    private final boolean allFavor;
     boolean loaded = false;
     Type responseObjectType;
     String key;
@@ -35,10 +36,11 @@ class MethodInfo {
     private boolean commit;
     private Type FavorType;
 
-    MethodInfo(Method method, SharedPreferences sp, String prefix) {
+    MethodInfo(Method method, SharedPreferences sp, String prefix, boolean allFavor) {
         this.method = method;
         this.sp = sp;
         this.prefix = prefix;
+        this.allFavor = allFavor;
         responseType = parseResponseType();
         isObservable = (responseType == ResponseType.OBSERVABLE);
     }
@@ -100,6 +102,10 @@ class MethodInfo {
             }
         }
 
+        if (allFavor && key == null) {
+            key = getKeyFromMethod(method);
+        }
+
         if (FavorType == String.class) {
             taste = new Taste.StringTaste(sp, key, defaultValues);
         } else if (FavorType == boolean.class) {
@@ -117,6 +123,7 @@ class MethodInfo {
 
     private String getKeyFromMethod(Method method) {
         String value = method.getName().toLowerCase();
+        if (value.startsWith("is") && FavorType == boolean.class) return value.substring(2);
         if (value.startsWith("get")) return value.substring(3);
         if (value.startsWith("set")) return value.substring(3);
         return value;
@@ -139,9 +146,9 @@ class MethodInfo {
 
         if (hasReturnType) {
             Class rawReturnType = Types.getRawType(returnType);
-            if (parameterTypes.length > 0) {
-                throw methodError("getter method %s should not have parameter", method.getName());
-            }
+//            if (parameterTypes.length > 0) {
+//                throw methodError("getter method %s should not have parameter", method.getName());
+//            }
 
             if (HAS_RX_JAVA) {
                 if (rawReturnType == Preference.class) {

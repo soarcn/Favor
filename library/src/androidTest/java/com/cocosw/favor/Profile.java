@@ -26,6 +26,12 @@ public interface Profile {
     void setAge(float age);
 
     @Favor
+    void isAlive(boolean alive);
+
+    @Favor
+    boolean alive();
+
+    @Favor
     int getHeight();
 
     @Favor

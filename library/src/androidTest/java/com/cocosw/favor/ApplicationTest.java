@@ -33,7 +33,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public void testPutValue() {
         profile.setHeight(120);
         Assert.assertEquals(120, sp().getInt("height", 0));
-        assertEquals(120,profile.getHeight());
+        assertEquals(120, profile.getHeight());
     }
 
 
@@ -48,10 +48,27 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         Assert.assertEquals(1000, profile.getDistance());
     }
 
+    public void testBoolValue() {
+        Assert.assertEquals(false, profile.alive());
+        profile.isAlive(true);
+        Assert.assertEquals(true, profile.alive());
+        Assert.assertEquals(true, sp().getBoolean("alive", false));
+    }
+
     public void testFloatValue() {
         profile.setAge(10.5f);
         Assert.assertEquals(10.5f, sp().getFloat("age", 0));
         assertEquals(10.5f, profile.getAge());
+    }
+
+    public void testAllFavor() {
+        Account account = new FavorAdapter.Builder(getContext()).build().create(Account.class);
+        remove("password");
+        remove("username");
+        assertEquals("No Name", account.getUserName());
+        Assert.assertNull(account.getPassword());
+        account.setPassword("Password");
+        assertEquals("Password", account.getPassword());
     }
 
 
@@ -60,10 +77,12 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     private void remove(String key) {
-        sp().edit().remove(key);
+        sp().edit().remove(key).commit();
     }
 
     private SharedPreferences sp() {
         return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
+
+
 }

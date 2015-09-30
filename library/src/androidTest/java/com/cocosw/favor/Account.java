@@ -9,6 +9,8 @@ public interface Account {
 
     @Default("No Name")
     String getUserName();
+
     String getPassword();
 
+    void setPassword(String password);
 }

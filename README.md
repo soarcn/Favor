@@ -2,7 +2,7 @@ Favor
 =======
 [![Build Status](https://travis-ci.org/soarcn/Favor.svg)](https://travis-ci.org/soarcn/Favor)
 
-One of the most easiest way to use sharepreference in android
+A easy way to use android sharepreference
 
 *Under development, Don't use it in production environment*
 
@@ -59,7 +59,7 @@ Or you can simplify it to
     String city();
 ```
 
-@AllFavor (TODO)
+@AllFavor
 -----
 
 ```java
