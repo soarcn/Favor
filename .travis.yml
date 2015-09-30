@@ -24,8 +24,6 @@ android:
 script:
   - ./gradlew assemble lint
 
-notifications:
-  email: false
 
 after_script:
     # Emulator Management: Create, Start and Wait
