@@ -3,6 +3,7 @@ package com.cocosw.favor;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 public class FavorAdapter {
 
+    private static final String TAG = "Favor";
     private final SharedPreferences sp;
 
     private final Map<Class<?>, Map<Method, MethodInfo>> serviceMethodInfoCache =
@@ -92,7 +94,7 @@ public class FavorAdapter {
             this.sp = sp;
         }
 
-        private Builder prefix(String prefix) {
+        public Builder prefix(String prefix) {
             this.prefix = prefix;
             return this;
         }
@@ -121,6 +123,10 @@ public class FavorAdapter {
 
             final MethodInfo methodInfo = getMethodInfo(methodDetailsCache, method, sp, prefix, allFavor);
             methodInfo.init();
+
+            if (log) {
+                Log.d(TAG, methodInfo.toString());
+            }
 
             if (methodInfo.responseType == MethodInfo.ResponseType.VOID) {
                 return methodInfo.set(args);

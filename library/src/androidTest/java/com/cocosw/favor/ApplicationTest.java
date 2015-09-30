@@ -49,6 +49,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testBoolValue() {
+        remove("alive");
         Assert.assertEquals(false, profile.alive());
         profile.isAlive(true);
         Assert.assertEquals(true, profile.alive());
@@ -69,6 +70,23 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         Assert.assertNull(account.getPassword());
         account.setPassword("Password");
         assertEquals("Password", account.getPassword());
+    }
+
+    public void testPrefix() {
+        Account account = new FavorAdapter.Builder(getContext()).build().create(Account.class);
+        remove("password");
+        assertNull(account.getPassword());
+        account.setPassword("Password");
+        assertEquals("Password", account.getPassword());
+
+        remove("_password");
+        FavorAdapter favor = new FavorAdapter.Builder(getContext()).prefix("_").build();
+        favor.enableLog(true);
+        Account account1 = favor.create(Account.class);
+        assertNull(account1.getPassword());
+        account1.setPassword("Password");
+        assertEquals("Password", account1.getPassword());
+        assertEquals("Password", sp().getString("_password", null));
     }
 
 

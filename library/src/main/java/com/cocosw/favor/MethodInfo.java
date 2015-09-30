@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 
 /**
  * <p/>
@@ -104,6 +105,9 @@ class MethodInfo {
 
         if (allFavor && key == null) {
             key = getKeyFromMethod(method);
+            if (!TextUtils.isEmpty(prefix)) {
+                key = prefix + key;
+            }
         }
 
         if (FavorType == String.class) {
@@ -193,10 +197,29 @@ class MethodInfo {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "MethodInfo{" +
+                "method=" + method +
+                ", responseType=" + responseType +
+                ", isObservable=" + isObservable +
+                ", sp=" + sp +
+                ", prefix='" + prefix + '\'' +
+                ", allFavor=" + allFavor +
+                ", loaded=" + loaded +
+                ", responseObjectType=" + responseObjectType +
+                ", key='" + key + '\'' +
+                ", defaultValues=" + Arrays.toString(defaultValues) +
+                ", rxPref=" + rxPref +
+                ", taste=" + taste +
+                ", commit=" + commit +
+                ", FavorType=" + FavorType +
+                '}';
+    }
+
     enum ResponseType {
         VOID,
         OBSERVABLE,
         OBJECT
     }
-
 }
