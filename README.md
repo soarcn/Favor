@@ -4,7 +4,7 @@ Favor
 
 One of the most easiest way to use sharepreference in android
 
-Under development
+*Under development, Don't use it in production environment*
 
 This library works on android 2.2+
 
@@ -20,7 +20,7 @@ public interface Profile {
     @Default("Sydney")
     String city();
 
-    @Favor()
+    @Favor
     void setAge(int age);
 }
 ```
@@ -30,7 +30,69 @@ public interface Profile {
 ```java 
 profile = new FavorAdapter.Builder(getContext()).build().create(Profile.class);
 profile.setAge(32);
+String city = profile.city();
 ```
+
+API Declaration
+======
+
+@Favor @Default
+-----
+
+```java
+    @Favor("city")
+    @Default("Sydney")
+    String city();
+```
+
+equals
+
+```java
+    PreferenceManager.getDefaultSharedPreferences(context).getString("city","Sydney");
+```
+
+Or you can simplify it to
+
+```java
+    @Favor
+    @Default("Sydney")
+    String city();
+```
+
+@AllFavor (TODO)
+-----
+
+```java
+@AllFavor
+public interface Account {
+    @Default("No Name")
+    String getUserName();
+    String getPassword();
+}
+```
+
+@Commit
+------
+
+By default, we will call editor.apply() when you set your preference(>api9), you can enforce to use editor.commit() by @Commit
+
+```java
+    @Favor
+    @Commit
+    void setAddress(String address);
+```
+    
+RxPreference (TODO)
+------
+    
+If you use RxJava/RxPreference, simple
+
+```java
+    @Favor
+    @Default("No Name")
+    Preference<String> name();
+```    
+
 
 
 
