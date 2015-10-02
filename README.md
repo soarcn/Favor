@@ -14,27 +14,36 @@ How to use this library
 1 Define the interface
 
 ```java 
-public interface Profile {
-
-    @Favor("city")
-    @Default("Sydney")
-    String city();
-
-    @Favor
-    void setAge(int age);
+@AllFavor
+public interface Account {
+    @Default("No Name")
+    String getUserName();
+    String setPassword(String password);
 }
 ```
 
 2 The FavorAdatper class generates an implementation of the interface.
 
 ```java 
-profile = new FavorAdapter.Builder(getContext()).build().create(Profile.class);
-profile.setAge(32);
-String city = profile.city();
+account = new FavorAdapter.Builder(getContext()).build().create(Account.class);
+account.setPassword("Passw0rd");
+String username = account.getUserName();
 ```
 
 API Declaration
 ======
+
+@AllFavor
+-----
+
+```java
+@AllFavor
+public interface Account {
+    @Default("No Name")
+    String getUserName();
+    String getPassword();
+}
+```
 
 @Favor @Default
 -----
@@ -59,22 +68,10 @@ Or you can simplify it to
     String city();
 ```
 
-@AllFavor
------
-
-```java
-@AllFavor
-public interface Account {
-    @Default("No Name")
-    String getUserName();
-    String getPassword();
-}
-```
-
 @Commit
 ------
 
-By default, we will call editor.apply() when you set your preference(>api9), you can enforce to use editor.commit() by @Commit
+By default, we will call editor.apply() (>api9), you can enforce it to use editor.commit() by @Commit
 
 ```java
     @Favor
@@ -85,15 +82,13 @@ By default, we will call editor.apply() when you set your preference(>api9), you
 RxPreference
 ------
     
-If you use RxJava/RxPreference, simple
+You are RxJava fan, easy!
 
 ```java
     @Favor
     @Default("No Name")
     Preference<String> name();
 ```    
-
-
 
 
 Contribute
