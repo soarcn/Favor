@@ -2,6 +2,7 @@ package com.cocosw.favor;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
@@ -110,18 +111,38 @@ class MethodInfo {
             }
         }
 
-        if (FavorType == String.class) {
-            taste = new Taste.StringTaste(sp, key, defaultValues);
-        } else if (FavorType == boolean.class) {
-            taste = new Taste.BoolTaste(sp, key, defaultValues);
-        } else if (FavorType == int.class) {
-            taste = new Taste.IntTaste(sp, key, defaultValues);
-        } else if (FavorType == float.class) {
-            taste = new Taste.FloatTaste(sp, key, defaultValues);
-        } else if (FavorType == long.class) {
-            taste = new Taste.LongTaste(sp,key,defaultValues);
+        if (responseType == ResponseType.OBSERVABLE) {
+            RxSharedPreferences rx = RxSharedPreferences.create(sp);
+            if (responseObjectType == String.class) {
+                rxPref = rx.getString(key, defaultValues[0]);
+            } else if (responseObjectType == Integer.class) {
+                rxPref = rx.getInteger(key, defaultValues[0] == null ? null : Integer.valueOf(defaultValues[0]));
+            } else if (responseObjectType == Float.class) {
+                rxPref = rx.getFloat(key, defaultValues[0] == null ? null : Float.valueOf(defaultValues[0]));
+            } else if (responseObjectType == Long.class) {
+                rxPref = rx.getLong(key, defaultValues[0] == null ? null : Long.valueOf(defaultValues[0]));
+            } else if (responseObjectType == Boolean.class) {
+                rxPref = rx.getBoolean(key, defaultValues[0] == null ? null : Boolean.valueOf(defaultValues[0]));
+            } else {
+//                        Class returnTypeClass = Types.getRawType(returnType);
+//                        if (returnTypeClass == Set.class) {
+//                            rxPref = rx.getStringSet(key,new HashSet<String>(defaultValues))
+//                        }
+            }
         } else {
-            taste = new Taste.EmptyTaste(sp, key, defaultValues);
+            if (FavorType == String.class) {
+                taste = new Taste.StringTaste(sp, key, defaultValues);
+            } else if (FavorType == boolean.class) {
+                taste = new Taste.BoolTaste(sp, key, defaultValues);
+            } else if (FavorType == int.class) {
+                taste = new Taste.IntTaste(sp, key, defaultValues);
+            } else if (FavorType == float.class) {
+                taste = new Taste.FloatTaste(sp, key, defaultValues);
+            } else if (FavorType == long.class) {
+                taste = new Taste.LongTaste(sp, key, defaultValues);
+            } else {
+                taste = new Taste.EmptyTaste(sp, key, defaultValues);
+            }
         }
     }
 
@@ -148,6 +169,12 @@ class MethodInfo {
 
         boolean hasReturnType = returnType != void.class;
 
+        if (typeToCheck != null && hasReturnType) {
+            Log.w("Favor", String.format("Setter method %s should not have return value", method.getName()));
+            hasReturnType = false;
+            returnType = void.class;
+        }
+
         if (hasReturnType) {
             Class rawReturnType = Types.getRawType(returnType);
 //            if (parameterTypes.length > 0) {
@@ -156,26 +183,9 @@ class MethodInfo {
 
             if (HAS_RX_JAVA) {
                 if (rawReturnType == Preference.class) {
-                    RxSharedPreferences rx = RxSharedPreferences.create(sp);
-                    returnType = Types.getSupertype(returnType, rawReturnType, Preference.class);
 
+                    returnType = Types.getSupertype(returnType, rawReturnType, Preference.class);
                     responseObjectType = getParameterUpperBound((ParameterizedType) returnType);
-                    if (responseObjectType == String.class) {
-                        rxPref = rx.getString(key, defaultValues[0]);
-                    } else if (responseObjectType == int.class) {
-                        rxPref = rx.getInteger(key, Integer.valueOf(defaultValues[0]));
-                    } else if (responseObjectType == float.class) {
-                        rxPref = rx.getFloat(key, Float.valueOf(defaultValues[0]));
-                    } else if (responseObjectType == long.class) {
-                        rxPref = rx.getLong(key, Long.valueOf(defaultValues[0]));
-                    } else if (responseObjectType == boolean.class) {
-                        rxPref = rx.getBoolean(key, Boolean.valueOf(defaultValues[0]));
-                    } else {
-//                        Class returnTypeClass = Types.getRawType(returnType);
-//                        if (returnTypeClass == Set.class) {
-//                            rxPref = rx.getStringSet(key,new HashSet<String>(defaultValues))
-//                        }
-                    }
                     return ResponseType.OBSERVABLE;
                 }
             }
@@ -186,7 +196,10 @@ class MethodInfo {
     }
 
     Object get() {
-        return taste.get();
+        if (responseType == ResponseType.OBSERVABLE)
+            return rxPref;
+        else
+            return taste.get();
     }
 
     Object set(Object[] args) {

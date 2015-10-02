@@ -5,7 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ApplicationTestCase;
 
+import com.f2prateek.rx.preferences.Preference;
+
 import junit.framework.Assert;
+
+import static android.os.SystemClock.sleep;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -63,13 +67,20 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testAllFavor() {
-        Account account = new FavorAdapter.Builder(getContext()).build().create(Account.class);
+        FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
+        adapter.enableLog(true);
+        Account account = adapter.create(Account.class);
         remove("password");
         remove("username");
         assertEquals("No Name", account.getUserName());
         Assert.assertNull(account.getPassword());
         account.setPassword("Password");
         assertEquals("Password", account.getPassword());
+        remove("extra");
+        assertEquals(null, sp().getString("extra", null));
+        account.setExtraPassword("extra");
+        assertEquals("extra", sp().getString("extra", null));
+        assertNull(sp().getString("extrapassword", null));
     }
 
     public void testPrefix() {
@@ -81,12 +92,30 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
         remove("_password");
         FavorAdapter favor = new FavorAdapter.Builder(getContext()).prefix("_").build();
-        favor.enableLog(true);
         Account account1 = favor.create(Account.class);
         assertNull(account1.getPassword());
         account1.setPassword("Password");
         assertEquals("Password", account1.getPassword());
         assertEquals("Password", sp().getString("_password", null));
+    }
+
+    public void testRxSharePreference() {
+        Preference<String> name = profile.name();
+        assertNotNull(name);
+        assertEquals("No Name", name.get());
+        Preference<Boolean> gender = profile.gender();
+
+        remove("gender");
+
+        assertNotNull(gender);
+        gender.set(true);
+        sleep(2000);
+        assertTrue(gender.get());
+        assertTrue(sp().getBoolean("gender", false));
+
+        gender.delete();
+        sleep(5000);
+        assertNull(gender.get());
     }
 
 

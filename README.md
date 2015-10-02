@@ -82,7 +82,7 @@ By default, we will call editor.apply() when you set your preference(>api9), you
     void setAddress(String address);
 ```
     
-RxPreference (TODO)
+RxPreference
 ------
     
 If you use RxJava/RxPreference, simple

@@ -87,7 +87,7 @@ public class FavorAdapter {
         private SharedPreferences sp;
 
         public Builder(Context context) {
-            sp = PreferenceManager.getDefaultSharedPreferences(context);
+            sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         }
 
         public Builder(SharedPreferences sp) {
@@ -128,17 +128,15 @@ public class FavorAdapter {
                 Log.d(TAG, methodInfo.toString());
             }
 
-            if (methodInfo.responseType == MethodInfo.ResponseType.VOID) {
-                return methodInfo.set(args);
-            } else {
-                //Getter
-                switch (methodInfo.responseType) {
-                    case OBSERVABLE:
-                        return methodInfo.rxPref;
-                    default:
-                        return methodInfo.get();
-                }
+            switch (methodInfo.responseType) {
+                case VOID:
+                    return methodInfo.set(args);
+                case OBJECT:
+                    return methodInfo.get();
+                case OBSERVABLE:
+                    return methodInfo.rxPref;
             }
+            return null;
         }
     }
 

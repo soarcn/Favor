@@ -13,4 +13,8 @@ public interface Account {
     String getPassword();
 
     void setPassword(String password);
+
+    @Favor("extra")
+    @Commit
+    void setExtraPassword(String extra);
 }

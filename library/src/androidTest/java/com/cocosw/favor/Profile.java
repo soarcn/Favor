@@ -49,9 +49,6 @@ public interface Profile {
     @Favor
     void setHobbies(Set<String> hobbies);
 
-
-
-
     @Favor("name")
     @Default("No Name")
     Preference<String> name();
