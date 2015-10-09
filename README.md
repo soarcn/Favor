@@ -14,7 +14,7 @@ How to use this library
 - Using Gradle
 
 ```groovy
-    compile 'com.cocosw:favor:0.0.x@aar'
+    compile 'com.cocosw:favor:0.1.0@aar'
 ```
 - Using Maven
 
@@ -22,7 +22,7 @@ How to use this library
 <dependency>
     <groupId>com.cocosw</groupId>
     <artifactId>favor</artifactId>
-    <version>0.0.x</version>
+    <version>0.1.0</version>
     <type>apklib</type>
 </dependency>
 ```
