@@ -9,7 +9,26 @@ A easy way to use android sharepreference
 This library works on android 2.2+
 
 How to use this library
-======
+=======
+
+- Using Gradle
+
+```groovy
+    compile 'com.cocosw:favor:0.0.x@aar'
+```
+- Using Maven
+
+```xml
+<dependency>
+    <groupId>com.cocosw</groupId>
+    <artifactId>favor</artifactId>
+    <version>0.0.x</version>
+    <type>apklib</type>
+</dependency>
+```
+
+API
+=======
 
 1 Define the interface
 
