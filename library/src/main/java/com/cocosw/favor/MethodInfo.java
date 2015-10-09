@@ -22,6 +22,7 @@ import java.util.Arrays;
 class MethodInfo {
 
     static final boolean HAS_RX_JAVA = hasRxJavaOnClasspath();
+    private static final String TAG = "Favor";
     final Method method;
     // Method-level details
     final ResponseType responseType;
@@ -65,6 +66,19 @@ class MethodInfo {
         } catch (ClassNotFoundException ignored) {
         }
         return false;
+    }
+
+    private static void checkDefaultValueType(Type reponse, String[] defaultValues) {
+        if (reponse == String.class || defaultValues[0] == null) {
+        } else if (reponse == int.class || reponse == Integer.class) {
+            Integer.parseInt(defaultValues[0]);
+        } else if (reponse == long.class || reponse == Long.class) {
+            Long.parseLong(defaultValues[0]);
+        } else if (reponse == boolean.class || reponse == Boolean.class) {
+            Boolean.parseBoolean(defaultValues[0]);
+        } else if (reponse == float.class || reponse == Float.class) {
+            Float.parseFloat(defaultValues[0]);
+        }
     }
 
     private RuntimeException methodError(String message, Object... args) {
@@ -112,6 +126,10 @@ class MethodInfo {
         }
 
         if (responseType == ResponseType.OBSERVABLE) {
+            checkDefaultValueType(responseObjectType, defaultValues);
+            if (commit) {
+                Log.w(TAG, "@Commit will be ignored for RxReference");
+            }
             RxSharedPreferences rx = RxSharedPreferences.create(sp);
             if (responseObjectType == String.class) {
                 rxPref = rx.getString(key, defaultValues[0]);
@@ -170,7 +188,7 @@ class MethodInfo {
         boolean hasReturnType = returnType != void.class;
 
         if (typeToCheck != null && hasReturnType) {
-            Log.w("Favor", String.format("Setter method %s should not have return value", method.getName()));
+            Log.w(TAG, String.format("Setter method %s should not have return value", method.getName()));
             hasReturnType = false;
             returnType = void.class;
         }

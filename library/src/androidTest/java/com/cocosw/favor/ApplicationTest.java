@@ -118,6 +118,24 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertNull(gender.get());
     }
 
+    public void testWrongCases() {
+        FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
+        adapter.enableLog(true);
+        Wrong wrong = adapter.create(Wrong.class);
+
+        //A warning
+        assertNotNull(wrong.commitForRxPreference());
+
+        try {
+            wrong.testWrongDefaultValue();
+            Assert.fail("Fail to check the wrong default value type");
+        } catch (Exception e) {
+            Assert.assertEquals(NumberFormatException.class, e.getClass());
+        }
+
+        assertNull(wrong.testRetrunValueForSetter(11));
+    }
+
 
     private void setSP(String key, String value) {
         sp().edit().putString(key, value).commit();
@@ -130,6 +148,5 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     private SharedPreferences sp() {
         return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
-
 
 }

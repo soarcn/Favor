@@ -165,6 +165,7 @@ abstract class Taste {
         @SuppressLint("CommitPrefEdits")
         @Override
         void set(Object object) {
+            //noinspection unchecked
             save(sp.edit().putStringSet(key, (Set<String>) object));
         }
 
