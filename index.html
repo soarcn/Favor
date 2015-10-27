@@ -19,7 +19,7 @@
 
         <header>
           <h1>Favor</h1>
-          <h2>A easy way to use android sharepreference</h2>
+          <h2>A easy way of using Android SharedPreferences.</h2>
         </header>
 
         <section id="downloads" class="clearfix">
@@ -36,11 +36,7 @@
 
 <p><a href="https://travis-ci.org/soarcn/Favor"><img src="https://travis-ci.org/soarcn/Favor.svg" alt="Build Status"></a></p>
 
-<p>A easy way to use android sharepreference</p>
-
-<p><em>Under development, Don't use it in production environment</em></p>
-
-<p>This library works on android 2.2+</p>
+<p>A easy way of using Android SharedPreferences.</p>
 
 <h1>
 <a id="how-to-use-this-library" class="anchor" href="#how-to-use-this-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use this library</h1>
@@ -65,7 +61,7 @@
 <h1>
 <a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h1>
 
-<p>1 Define the interface</p>
+<p>1 Define a interface.</p>
 
 <div class="highlight highlight-source-java"><pre>@<span class="pl-smi">AllFavor</span>
 <span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">Account</span> {
@@ -105,7 +101,7 @@ account<span class="pl-k">.</span>setPassword(<span class="pl-s"><span class="pl
 
 <div class="highlight highlight-source-java"><pre>    <span class="pl-smi">PreferenceManager</span><span class="pl-k">.</span>getDefaultSharedPreferences(context)<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>city<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>Sydney<span class="pl-pds">"</span></span>);</pre></div>
 
-<p>Or you can simplify it to</p>
+<p>And you can simplify it, Favor will extract the key from the method name</p>
 
 <div class="highlight highlight-source-java"><pre>    @<span class="pl-smi">Favor</span>
     @Default(<span class="pl-s"><span class="pl-pds">"</span>Sydney<span class="pl-pds">"</span></span>)
@@ -115,7 +111,7 @@ account<span class="pl-k">.</span>setPassword(<span class="pl-s"><span class="pl
 <a id="commit" class="anchor" href="#commit" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://github.com/Commit" class="user-mention">@Commit</a>
 </h2>
 
-<p>By default, we will call editor.apply() (&gt;api9), you can enforce it to use editor.commit() by <a href="https://github.com/Commit" class="user-mention">@Commit</a></p>
+<p>By default, Favor will call editor.apply() (&gt;api9), but you can force it to use editor.commit() by <a href="https://github.com/Commit" class="user-mention">@Commit</a></p>
 
 <div class="highlight highlight-source-java"><pre>    @<span class="pl-smi">Favor</span>
     @<span class="pl-smi">Commit</span>
@@ -124,7 +120,7 @@ account<span class="pl-k">.</span>setPassword(<span class="pl-s"><span class="pl
 <h2>
 <a id="rxpreference" class="anchor" href="#rxpreference" aria-hidden="true"><span class="octicon octicon-link"></span></a>RxPreference</h2>
 
-<p>You are RxJava fan, easy!</p>
+<p>You are a RxJava fan, easy! (rx-preferences dependency is required)</p>
 
 <div class="highlight highlight-source-java"><pre>    @<span class="pl-smi">Favor</span>
     @Default(<span class="pl-s"><span class="pl-pds">"</span>No Name<span class="pl-pds">"</span></span>)
