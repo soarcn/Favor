@@ -2,11 +2,7 @@ Favor
 =======
 [![Build Status](https://travis-ci.org/soarcn/Favor.svg)](https://travis-ci.org/soarcn/Favor)
 
-A easy way to use android sharepreference
-
-*Under development, Don't use it in production environment*
-
-This library works on android 2.2+
+A easy way of using Android SharedPreferences.
 
 How to use this library
 =======
@@ -30,7 +26,7 @@ How to use this library
 API
 =======
 
-1 Define the interface
+1 Define a interface.
 
 ```java 
 @AllFavor
@@ -79,7 +75,7 @@ equals
     PreferenceManager.getDefaultSharedPreferences(context).getString("city","Sydney");
 ```
 
-Or you can simplify it to
+And you can simplify it, Favor will extract the key from the method name
 
 ```java
     @Favor
@@ -90,7 +86,7 @@ Or you can simplify it to
 @Commit
 ------
 
-By default, we will call editor.apply() (>api9), you can enforce it to use editor.commit() by @Commit
+By default, Favor will call editor.apply() (>api9), but you can force it to use editor.commit() by @Commit
 
 ```java
     @Favor
@@ -101,7 +97,7 @@ By default, we will call editor.apply() (>api9), you can enforce it to use edito
 RxPreference
 ------
     
-You are RxJava fan, easy!
+You are a RxJava fan, easy! (rx-preferences dependency is required)
 
 ```java
     @Favor
