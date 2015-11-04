@@ -34,7 +34,7 @@
           <h1>
 <a id="favor" class="anchor" href="#favor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Favor</h1>
 
-<p><a href="https://travis-ci.org/soarcn/Favor"><img src="https://travis-ci.org/soarcn/Favor.svg" alt="Build Status"></a></p>
+<p><a href="https://travis-ci.org/soarcn/Favor"><img src="https://travis-ci.org/soarcn/Favor.svg" alt="Build Status"></a>  <a href="http://android-arsenal.com/details/1/2695"><img src="https://img.shields.io/badge/Android%20Arsenal-Favor-brightgreen.svg?style=flat" alt="Android Arsenal"></a></p>
 
 <p>A easy way of using Android SharedPreferences.</p>
 
@@ -126,6 +126,31 @@ account<span class="pl-k">.</span>setPassword(<span class="pl-s"><span class="pl
     @Default(<span class="pl-s"><span class="pl-pds">"</span>No Name<span class="pl-pds">"</span></span>)
     <span class="pl-k">Preference&lt;<span class="pl-smi">String</span>&gt;</span> name();</pre></div>
 
+<h2>
+<a id="advanced-usage" class="anchor" href="#advanced-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced usage</h2>
+
+<p>Favor support put/get all primitive types, including int/long/float/String/bool, String set is also supported for API&gt;=11.
+From 0.1.1, Favor (Experimentally) supports Serializable object saving/loading.</p>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Image</span> <span class="pl-k">implements</span> <span class="pl-e">Serializable</span> {
+    <span class="pl-c1">....</span>
+    }
+
+    @<span class="pl-smi">Favor</span>
+    <span class="pl-smi">Image</span> image();
+
+    @<span class="pl-smi">Favor</span>
+    <span class="pl-k">void</span> setImage(<span class="pl-smi">Image</span> image);</pre></div>
+
+<p>There is one limitation that you can't set default value for Serializable preference item.</p>
+
+<h1>
+<a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span class="octicon octicon-link"></span></a>Proguard</h1>
+
+<div class="highlight highlight-text-xml"><pre># Favor
+-dontwarn com.cocosw.favor.** { *; }
+-keep class com.cocosw.favor.** { *; }</pre></div>
+
 <h1>
 <a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h1>
 
@@ -136,7 +161,7 @@ account<span class="pl-k">.</span>setPassword(<span class="pl-s"><span class="pl
 <h1>
 <a id="about-me" class="anchor" href="#about-me" aria-hidden="true"><span class="octicon octicon-link"></span></a>About me</h1>
 
-<p>I'm Kai, an 32 years old android developer based in Sydney.</p>
+<p>I'm Kai, an 32 years old android developer living in Sydney.</p>
 
 <h1>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
