@@ -1,6 +1,13 @@
 ChangeLog
 ============
 
+0.2.0
+-------
+
+- Fix bug: fail to set null to String type preference
+- Support String Set preference
+- support Serializable preference
+
 0.1.0
 -------
 
