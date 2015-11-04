@@ -1,6 +1,7 @@
 package com.cocosw.favor;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ApplicationTestCase;
@@ -118,10 +119,16 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertNull(gender.get());
     }
 
+    public void testRxSPTypes() {
+        profile.age().get();
+        profile.height().get();
+        profile.distance().get();
+    }
+
     public void testWrongCases() {
-        FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
+        final FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
         adapter.enableLog(true);
-        Wrong wrong = adapter.create(Wrong.class);
+        final Wrong wrong = adapter.create(Wrong.class);
 
         //A warning
         assertNotNull(wrong.commitForRxPreference());
@@ -134,22 +141,58 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }
 
         assertNull(wrong.testReturnValueForSetter(11));
-        try {
-            wrong.testUnsupportedType(null);
-            Assert.fail("Fail to check unsupported value type");
-        } catch (Exception e) {
-            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
-            Assert.assertTrue(e.getMessage().contains("Unsupported type"));
-        }
 
-        try {
-            Object obj = wrong.testUnsupportedType();
-            Assert.fail("Fail to check unsupported value type");
-        } catch (Exception e) {
-            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
-            Assert.assertTrue(e.getMessage().contains("Unsupported type"));
-        }
+        assertException(new Runnable() {
+            @Override
+            public void run() {
+                wrong.testUnsupportedType(null);
+            }
+        }, "Unsupported type", "Fail to check unsupported value type");
 
+        assertException(new Runnable() {
+            @Override
+            public void run() {
+                wrong.testUnsupportedType();
+            }
+        }, "Unsupported type", "Fail to check unsupported value type");
+
+
+        assertException(new Runnable() {
+            @Override
+            public void run() {
+                wrong.testUnsupportedType(null);
+            }
+        }, "Unsupported type", "Fail to check unsupported value type");
+
+        assertException(new Runnable() {
+            @Override
+            public void run() {
+                wrong.testTooMuchParameters(1, 2);
+            }
+        }, "more than one parameter", "Fail to check redundant parameters");
+
+        assertException(new Runnable() {
+            @Override
+            public void run() {
+                adapter.create(Wrong.FavorClz.class);
+            }
+        }, "interface definitions", "Only interface definitions are supported");
+    }
+
+    public void testGivenSharedPreferences() {
+        SharedPreferences sp = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        FavorAdapter userAdapter = new FavorAdapter.Builder(sp).build();
+        userAdapter.enableLog(true);
+        profile.setAddress(null);
+        Profile userprofile = userAdapter.create(Profile.class);
+        userprofile.setAddress("address");
+        assertNull(profile.getAddress());
+        assertEquals("address", userprofile.getAddress());
+    }
+
+    public void testSetNull() {
+        profile.setAddress(null);
+        assertNull(profile.getAddress());
     }
 
 
@@ -163,6 +206,16 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     private SharedPreferences sp() {
         return PreferenceManager.getDefaultSharedPreferences(getContext());
+    }
+
+
+    private void assertException(Runnable runnable, String message, String failMsg) {
+        try {
+            runnable.run();
+            Assert.fail(failMsg);
+        } catch (Exception e) {
+            Assert.assertTrue(e.getMessage().contains(message));
+        }
     }
 
 }

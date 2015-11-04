@@ -58,7 +58,7 @@ abstract class Taste {
         @SuppressLint("CommitPrefEdits")
         @Override
         SharedPreferences.Editor editor(Object object) {
-            return sp.edit().putString(key, String.valueOf(object));
+            return sp.edit().putString(key, (String) object);
         }
     }
 

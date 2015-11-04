@@ -16,6 +16,9 @@ public interface Profile {
     String city();
 
     @Favor
+    String getAddress();
+
+    @Favor
     @Commit
     void setAddress(String address);
 
@@ -55,4 +58,13 @@ public interface Profile {
 
     @Favor(value = "gender")
     Preference<Boolean> gender();
+
+    @Favor
+    Preference<Float> age();
+
+    @Favor
+    Preference<Integer> height();
+
+    @Favor
+    Preference<Long> distance();
 }

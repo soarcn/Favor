@@ -45,7 +45,7 @@ public class FavorAdapter {
 
     private static <T> void validateServiceClass(Class<T> service) {
         if (!service.isInterface()) {
-            throw new IllegalArgumentException("Only interface endpoint definitions are supported.");
+            throw new IllegalArgumentException("Only interface definitions are supported.");
         }
         if (service.getInterfaces().length > 0) {
             throw new IllegalArgumentException("Interface definitions must not extend other interfaces.");

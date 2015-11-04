@@ -19,7 +19,12 @@ public interface Wrong {
 
     Profile testUnsupportedType();
 
+    void testTooMuchParameters(int a, int b);
+
     @Commit
     Preference<String> commitForRxPreference();
 
+    class FavorClz {
+
+    }
 }
