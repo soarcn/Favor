@@ -23,6 +23,7 @@ public interface Profile {
     void setAddress(String address);
 
     @Favor
+    @Default("32.5")
     float getAge();
 
     @Favor
@@ -32,15 +33,18 @@ public interface Profile {
     void isAlive(boolean alive);
 
     @Favor
+    @Default("true")
     boolean alive();
 
     @Favor
+    @Default("170")
     int getHeight();
 
     @Favor
     void setHeight(int height);
 
     @Favor
+    @Default("10000")
     long getDistance();
 
     @Favor

@@ -45,6 +45,14 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public void testDefaultValue() {
         remove("city");
         Assert.assertEquals("Sydney", profile.city());
+        remove("alive");
+        Assert.assertEquals(true, profile.alive());
+        remove("height");
+        Assert.assertEquals(170, profile.getHeight());
+        remove("distance");
+        Assert.assertEquals(10000, profile.getDistance());
+        remove("age");
+        Assert.assertEquals(32.5f, profile.getAge());
     }
 
     public void testLongValue() {
@@ -55,10 +63,10 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     public void testBoolValue() {
         remove("alive");
-        Assert.assertEquals(false, profile.alive());
-        profile.isAlive(true);
         Assert.assertEquals(true, profile.alive());
-        Assert.assertEquals(true, sp().getBoolean("alive", false));
+        profile.isAlive(false);
+        Assert.assertEquals(false, profile.alive());
+        Assert.assertEquals(false, sp().getBoolean("alive", true));
     }
 
     public void testFloatValue() {
@@ -124,6 +132,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         profile.height().get();
         profile.distance().get();
     }
+
 
     public void testWrongCases() {
         final FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
