@@ -5,6 +5,8 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -134,13 +136,18 @@ abstract class Taste {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     static class StringSetTaste extends Taste {
+        private final HashSet<String> dv;
+
         StringSetTaste(SharedPreferences sp, String key, String[] defaultValue) {
             super(sp, key, defaultValue);
+            if (defaultValue != null && defaultValue.length > 0 && defaultValue[0] != null)
+                dv = new HashSet<>(Arrays.asList(defaultValue));
+            else dv = null;
         }
 
         @Override
         Object get() {
-            return sp.getLong(key, Long.valueOf(defaultValue[0]));
+            return sp.getStringSet(key, dv);
         }
 
         @SuppressLint("CommitPrefEdits")

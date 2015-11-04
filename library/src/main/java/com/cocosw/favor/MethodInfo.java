@@ -13,6 +13,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * <p/>
@@ -158,6 +159,8 @@ class MethodInfo {
                 taste = new Taste.FloatTaste(sp, key, defaultValues);
             } else if (FavorType == long.class) {
                 taste = new Taste.LongTaste(sp, key, defaultValues);
+            } else if (Types.getRawType(FavorType) == Set.class) {
+                taste = new Taste.StringSetTaste(sp, key, defaultValues);
             } else {
                 taste = new Taste.EmptyTaste(sp, key, defaultValues);
                 throw methodError("Unsupported type " + FavorType.toString());

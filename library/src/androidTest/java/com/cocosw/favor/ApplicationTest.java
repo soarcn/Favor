@@ -6,11 +6,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ApplicationTestCase;
 
-import com.f2prateek.rx.preferences.Preference;
-
 import junit.framework.Assert;
 
-import static android.os.SystemClock.sleep;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -108,24 +107,24 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertEquals("Password", sp().getString("_password", null));
     }
 
-    public void testRxSharePreference() {
-        Preference<String> name = profile.name();
-        assertNotNull(name);
-        assertEquals("No Name", name.get());
-        Preference<Boolean> gender = profile.gender();
-
-        remove("gender");
-
-        assertNotNull(gender);
-        gender.set(true);
-        sleep(2000);
-        assertTrue(gender.get());
-        assertTrue(sp().getBoolean("gender", false));
-
-        gender.delete();
-        sleep(2000);
-        assertNull(gender.get());
-    }
+//    public void testRxSharePreference() {
+//        Preference<String> name = profile.name();
+//        assertNotNull(name);
+//        assertEquals("No Name", name.get());
+//        Preference<Boolean> gender = profile.gender();
+//
+//        remove("gender");
+//
+//        assertNotNull(gender);
+//        gender.set(true);
+//        sleep(2000);
+//        assertTrue(gender.get());
+//        assertTrue(sp().getBoolean("gender", false));
+//
+//        gender.delete();
+//        sleep(2000);
+//        assertNull(gender.get());
+//    }
 
     public void testRxSPTypes() {
         profile.age().get();
@@ -225,6 +224,20 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         } catch (Exception e) {
             Assert.assertTrue(e.getMessage().contains(message));
         }
+    }
+
+    public void testStringSet() {
+        assertTrue(profile.hobbies() == null);
+        HashSet<String> hobbies = new HashSet<>();
+        hobbies.add("swimming");
+        hobbies.add("programming");
+        hobbies.add("having sex");
+        profile.setHobbies(hobbies);
+        Set<String> out = profile.hobbies();
+        assertEquals(3, out.size());
+        assertTrue(out.contains("swimming"));
+        assertTrue(out.contains("programming"));
+        assertTrue(out.contains("having sex"));
     }
 
 }

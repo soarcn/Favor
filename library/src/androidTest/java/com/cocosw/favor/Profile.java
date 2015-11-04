@@ -71,4 +71,6 @@ public interface Profile {
 
     @Favor
     Preference<Long> distance();
+
+
 }
