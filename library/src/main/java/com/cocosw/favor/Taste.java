@@ -24,31 +24,31 @@ abstract class Taste {
         this.defaultValue = defaultValue;
     }
 
-    protected void save(SharedPreferences.Editor editor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+    @SuppressLint("CommitPrefEdits")
+    protected void save(SharedPreferences.Editor editor, boolean commit) {
+        if (!commit || Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
             editor.apply();
         else
             editor.commit();
     }
 
-    abstract void set(Object object);
+    void set(Object object) {
+        save(editor(object), false);
+    }
 
     abstract Object get();
 
-    abstract void commit(Object object);
+    void commit(Object object) {
+        save(editor(object), true);
+    }
+
+    abstract SharedPreferences.Editor editor(Object object);
 
     static class StringTaste extends Taste {
 
         StringTaste(SharedPreferences sp, String key, String[] defaultValue) {
             super(sp, key, defaultValue);
         }
-
-        @SuppressLint("CommitPrefEdits")
-        @Override
-        public void set(Object object) {
-            save(sp.edit().putString(key, String.valueOf(object)));
-        }
-
 
         @Override
         public Object get() {
@@ -57,8 +57,8 @@ abstract class Taste {
 
         @SuppressLint("CommitPrefEdits")
         @Override
-        void commit(Object object) {
-            sp.edit().putString(key, String.valueOf(object)).commit();
+        SharedPreferences.Editor editor(Object object) {
+            return sp.edit().putString(key, String.valueOf(object));
         }
     }
 
@@ -68,12 +68,6 @@ abstract class Taste {
             super(sp, key, defaultValue);
         }
 
-        @SuppressLint("CommitPrefEdits")
-        @Override
-        void set(Object object) {
-            save(sp.edit().putInt(key, (Integer) object));
-        }
-
         @Override
         Object get() {
             return sp.getInt(key, defaultValue[0]==null?0:Integer.valueOf(defaultValue[0]));
@@ -81,8 +75,8 @@ abstract class Taste {
 
         @SuppressLint("CommitPrefEdits")
         @Override
-        void commit(Object object) {
-            sp.edit().putInt(key, (Integer) object).commit();
+        SharedPreferences.Editor editor(Object object) {
+            return sp.edit().putInt(key, (Integer) object);
         }
     }
 
@@ -92,12 +86,6 @@ abstract class Taste {
             super(sp, key, defaultValue);
         }
 
-        @SuppressLint("CommitPrefEdits")
-        @Override
-        void set(Object object) {
-            save(sp.edit().putBoolean(key, (Boolean) object));
-        }
-
         @Override
         Object get() {
             return sp.getBoolean(key, defaultValue[0]==null?false:Boolean.valueOf(defaultValue[0]));
@@ -105,20 +93,14 @@ abstract class Taste {
 
         @SuppressLint("CommitPrefEdits")
         @Override
-        void commit(Object object) {
-            sp.edit().putBoolean(key, (Boolean) object).commit();
+        SharedPreferences.Editor editor(Object object) {
+            return sp.edit().putBoolean(key, (Boolean) object);
         }
     }
 
     static class FloatTaste extends Taste {
         FloatTaste(SharedPreferences sp, String key, String[] defaultValue) {
             super(sp, key, defaultValue);
-        }
-
-        @SuppressLint("CommitPrefEdits")
-        @Override
-        void set(Object object) {
-            save(sp.edit().putFloat(key, (Float) object));
         }
 
         @Override
@@ -128,20 +110,14 @@ abstract class Taste {
 
         @SuppressLint("CommitPrefEdits")
         @Override
-        void commit(Object object) {
-            sp.edit().putFloat(key, (Float) object).commit();
+        SharedPreferences.Editor editor(Object object) {
+            return sp.edit().putFloat(key, (Float) object);
         }
     }
 
     static class LongTaste extends Taste {
         LongTaste(SharedPreferences sp, String key, String[] defaultValue) {
             super(sp, key, defaultValue);
-        }
-
-        @SuppressLint("CommitPrefEdits")
-        @Override
-        void set(Object object) {
-            save(sp.edit().putLong(key, (Long) object));
         }
 
         @Override
@@ -151,8 +127,8 @@ abstract class Taste {
 
         @SuppressLint("CommitPrefEdits")
         @Override
-        void commit(Object object) {
-            sp.edit().putLong(key, (Long) object).commit();
+        SharedPreferences.Editor editor(Object object) {
+            return sp.edit().putLong(key, (Long) object);
         }
     }
 
@@ -162,13 +138,6 @@ abstract class Taste {
             super(sp, key, defaultValue);
         }
 
-        @SuppressLint("CommitPrefEdits")
-        @Override
-        void set(Object object) {
-            //noinspection unchecked
-            save(sp.edit().putStringSet(key, (Set<String>) object));
-        }
-
         @Override
         Object get() {
             return sp.getLong(key, Long.valueOf(defaultValue[0]));
@@ -176,8 +145,8 @@ abstract class Taste {
 
         @SuppressLint("CommitPrefEdits")
         @Override
-        void commit(Object object) {
-            sp.edit().putLong(key, (Long) object).commit();
+        SharedPreferences.Editor editor(Object object) {
+            return sp.edit().putStringSet(key, (Set<String>) object);
         }
     }
 
@@ -188,19 +157,15 @@ abstract class Taste {
         }
 
         @Override
-        void set(Object object) {
-
-        }
-
-        @Override
         Object get() {
             return null;
         }
 
         @Override
-        void commit(Object object) {
-
+        SharedPreferences.Editor editor(Object object) {
+            return null;
         }
+
     }
 
 }
