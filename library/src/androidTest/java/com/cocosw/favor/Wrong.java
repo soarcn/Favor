@@ -10,7 +10,7 @@ import com.f2prateek.rx.preferences.Preference;
 @AllFavor
 public interface Wrong {
 
-    String testRetrunValueForSetter(int value);
+    String testReturnValueForSetter(int value);
 
     @Default("Hello")
     int testWrongDefaultValue();

@@ -133,7 +133,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             Assert.assertEquals(NumberFormatException.class, e.getClass());
         }
 
-        assertNull(wrong.testRetrunValueForSetter(11));
+        assertNull(wrong.testReturnValueForSetter(11));
     }
 
 
