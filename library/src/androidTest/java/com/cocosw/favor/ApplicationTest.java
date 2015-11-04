@@ -114,7 +114,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertTrue(sp().getBoolean("gender", false));
 
         gender.delete();
-        sleep(5000);
+        sleep(2000);
         assertNull(gender.get());
     }
 
@@ -134,6 +134,22 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         }
 
         assertNull(wrong.testReturnValueForSetter(11));
+        try {
+            wrong.testUnsupportedType(null);
+            Assert.fail("Fail to check unsupported value type");
+        } catch (Exception e) {
+            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
+            Assert.assertTrue(e.getMessage().contains("Unsupported type"));
+        }
+
+        try {
+            Object obj = wrong.testUnsupportedType();
+            Assert.fail("Fail to check unsupported value type");
+        } catch (Exception e) {
+            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
+            Assert.assertTrue(e.getMessage().contains("Unsupported type"));
+        }
+
     }
 
 

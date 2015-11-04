@@ -160,6 +160,7 @@ class MethodInfo {
                 taste = new Taste.LongTaste(sp, key, defaultValues);
             } else {
                 taste = new Taste.EmptyTaste(sp, key, defaultValues);
+                throw methodError("Unsupported type " + FavorType.toString());
             }
         }
     }

@@ -15,6 +15,10 @@ public interface Wrong {
     @Default("Hello")
     int testWrongDefaultValue();
 
+    void testUnsupportedType(Profile profile);
+
+    Profile testUnsupportedType();
+
     @Commit
     Preference<String> commitForRxPreference();
 
