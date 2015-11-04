@@ -6,10 +6,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ApplicationTestCase;
 
+import com.f2prateek.rx.preferences.Preference;
+
 import junit.framework.Assert;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static android.os.SystemClock.sleep;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -107,24 +111,24 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertEquals("Password", sp().getString("_password", null));
     }
 
-//    public void testRxSharePreference() {
-//        Preference<String> name = profile.name();
-//        assertNotNull(name);
-//        assertEquals("No Name", name.get());
-//        Preference<Boolean> gender = profile.gender();
-//
-//        remove("gender");
-//
-//        assertNotNull(gender);
-//        gender.set(true);
-//        sleep(2000);
-//        assertTrue(gender.get());
-//        assertTrue(sp().getBoolean("gender", false));
-//
-//        gender.delete();
-//        sleep(2000);
-//        assertNull(gender.get());
-//    }
+    public void testRxSharePreference() {
+        Preference<String> name = profile.name();
+        assertNotNull(name);
+        assertEquals("No Name", name.get());
+        Preference<Boolean> gender = profile.gender();
+
+        remove("gender");
+
+        assertNotNull(gender);
+        gender.set(true);
+        sleep(2000);
+        assertTrue(gender.get());
+        assertTrue(sp().getBoolean("gender", false));
+
+        gender.delete();
+        sleep(2000);
+        assertNull(gender.get());
+    }
 
     public void testRxSPTypes() {
         profile.age().get();
@@ -227,6 +231,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testStringSet() {
+        remove("hobbies");
         assertTrue(profile.hobbies() == null);
         HashSet<String> hobbies = new HashSet<>();
         hobbies.add("swimming");
@@ -239,5 +244,21 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertTrue(out.contains("programming"));
         assertTrue(out.contains("having sex"));
     }
+
+    public void testSerializableObject() {
+        remove("image");
+        assertNull(profile.image());
+        Image image = new Image();
+        image.url = "http://www.cocosw.com";
+        image.format = "jpg";
+        profile.setImage(image);
+
+        Image img = profile.image();
+        assertNotNull(img);
+        assertEquals("jpg", img.format);
+        assertEquals("http://www.cocosw.com", img.url);
+    }
+
+
 
 }

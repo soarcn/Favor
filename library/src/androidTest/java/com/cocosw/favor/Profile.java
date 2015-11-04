@@ -1,5 +1,6 @@
 package com.cocosw.favor;
 
+
 import com.f2prateek.rx.preferences.Preference;
 
 import java.util.Set;
@@ -72,5 +73,10 @@ public interface Profile {
     @Favor
     Preference<Long> distance();
 
+    @Favor
+    Image image();
+
+    @Favor
+    void setImage(Image image);
 
 }

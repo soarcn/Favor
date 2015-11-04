@@ -7,6 +7,7 @@ import android.util.Log;
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -161,6 +162,8 @@ class MethodInfo {
                 taste = new Taste.LongTaste(sp, key, defaultValues);
             } else if (Types.getRawType(FavorType) == Set.class) {
                 taste = new Taste.StringSetTaste(sp, key, defaultValues);
+            } else if (Serializable.class.isAssignableFrom(Types.getRawType(FavorType))) {
+                taste = new Taste.SerializableTaste(sp, key, defaultValues);
             } else {
                 taste = new Taste.EmptyTaste(sp, key, defaultValues);
                 throw methodError("Unsupported type " + FavorType.toString());
