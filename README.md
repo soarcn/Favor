@@ -108,8 +108,8 @@ You are a RxJava fan, easy! (rx-preferences dependency is required)
 Advanced usage
 -------
 
-Favor support put/get all primitive types, including int/long/float/String/bool, Set<String> is also supported for API>=11.
-Need to put/get more types of object? From 0.1.1, Favor (Experimentally) support Serializable object saving/loading.
+Favor support put/get all primitive types, including int/long/float/String/bool, String set is also supported for API>=11.
+From 0.1.1, Favor (Experimentally) supports Serializable object saving/loading.
 
 ```java
     public class Image implements Serializable {
