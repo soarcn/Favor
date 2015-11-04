@@ -105,6 +105,14 @@ You are a RxJava fan, easy! (rx-preferences dependency is required)
     Preference<String> name();
 ```    
 
+Proguard
+=======
+
+```xml
+# Favor
+-dontwarn com.cocosw.favor.** { *; }
+-keep class com.cocosw.favor.** { *; }
+```
 
 Contribute
 =======
@@ -114,7 +122,7 @@ Contribute
 About me
 =======
 
-I'm Kai, an 32 years old android developer based in Sydney.
+I'm Kai, an 32 years old android developer living in Sydney.
 
 
 License
