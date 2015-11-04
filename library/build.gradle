@@ -2,6 +2,15 @@ apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/android-libr
 apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/maven_push.gradle'
 
 
+android {
+    buildTypes {
+        debug {
+            // output coverage with ./gradlew clean build createDebugCoverageReport
+            testCoverageEnabled true
+        }
+    }
+}
+
 dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
