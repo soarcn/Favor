@@ -105,6 +105,27 @@ You are a RxJava fan, easy! (rx-preferences dependency is required)
     Preference<String> name();
 ```    
 
+Advanced usage
+-------
+
+Favor support put/get all primitive types, including int/long/float/String/bool, Set<String> is also supported for API>=11.
+Need to put/get more types of object? From 0.1.1, Favor (Experimentally) support Serializable object saving/loading.
+
+```java
+    public class Image implements Serializable {
+    ....
+    }
+   
+    @Favor
+    Image image();
+
+    @Favor
+    void setImage(Image image);
+```
+
+There is one limitation that you can't set default value for Serializable preference item.
+
+
 Proguard
 =======
 
