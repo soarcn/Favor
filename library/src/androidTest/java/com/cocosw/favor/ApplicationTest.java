@@ -260,5 +260,12 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
 
+    public void testNegativeNumber() {
+        FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
+        adapter.enableLog(true);
+        Account account = adapter.create(Account.class);
+        assertEquals(-1, account.getGroupId());
+    }
+
 
 }

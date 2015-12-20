@@ -14,6 +14,12 @@ public interface Account {
 
     void setPassword(String password);
 
+    @Default("-1")
+    int getGroupId();
+
+    @Commit
+    void setGroupId(int id);
+
     @Favor("extra")
     @Commit
     void setExtraPassword(String extra);
