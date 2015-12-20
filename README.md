@@ -10,7 +10,7 @@ How to use this library
 - Using Gradle
 
 ```groovy
-    compile 'com.cocosw:favor:0.1.0@aar'
+    compile 'com.cocosw:favor:0.2.0@aar'
 ```
 - Using Maven
 
@@ -18,7 +18,7 @@ How to use this library
 <dependency>
     <groupId>com.cocosw</groupId>
     <artifactId>favor</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <type>apklib</type>
 </dependency>
 ```
@@ -109,7 +109,7 @@ Advanced usage
 -------
 
 Favor support put/get all primitive types, including int/long/float/String/bool, String set is also supported for API>=11.
-From 0.1.1, Favor (Experimentally) supports Serializable object saving/loading.
+From 0.2.0, Favor (Experimentally) supports Serializable object saving/loading.
 
 ```java
     public class Image implements Serializable {
