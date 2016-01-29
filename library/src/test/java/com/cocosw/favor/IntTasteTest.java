@@ -6,36 +6,36 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Mohd Farid mohd.farid@devfactory.com
  */
-public class StringTasteTest {
+public class IntTasteTest {
 
     private SharedPreferences sharedPreferences;
 
-    private final String[] defaultValues = {"default-value-first", "default-value-second"};
+    private final String[] defaultValues = {"10", "100"};
 
     private SharedPreferences.Editor editor;
 
-    private Taste.StringTaste stringTaste;
+    private Taste.IntTaste intTaste;
 
     @Before
-    public void setup(){
+    public void setUp() throws Exception {
         sharedPreferences = Mockito.mock(SharedPreferences.class);
-        Mockito.when(sharedPreferences.getString("key", "default-value-first")).thenReturn("return-val-for-key-and-valueString");
+        Mockito.when(sharedPreferences.getInt("key", 10)).thenReturn(100);
         editor = Mockito.mock(SharedPreferences.Editor.class);
-        stringTaste = new Taste.StringTaste(sharedPreferences, "key", defaultValues);
+        intTaste = new Taste.IntTaste(sharedPreferences, "key", defaultValues);
     }
 
     @Test
     public void testGet() throws Exception {
         //when
-        Object getResult = stringTaste.get();
+        Object getResult = intTaste.get();
 
         //then
-        assertEquals("return-val-for-key-and-valueString", getResult);
+        assertEquals(100, getResult);
     }
 
     @Test
@@ -44,9 +44,9 @@ public class StringTasteTest {
         Mockito.when(sharedPreferences.edit()).thenReturn(editor);
 
         //when
-        stringTaste.editor("some-value");
+        intTaste.editor(100);
 
         //then
-        Mockito.verify(editor).putString("key", "some-value");
+        Mockito.verify(editor).putInt("key", 100);
     }
 }
