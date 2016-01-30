@@ -207,24 +207,4 @@ public class TypesEqualsTest {
         //then
         assertFalse(result);
     }
-
-    @Test
-    public void testGetGenericSupertype() throws Exception {
-
-    }
-
-    @Test
-    public void testTypeToString() throws Exception {
-
-    }
-
-    @Test
-    public void testGetSupertype() throws Exception {
-
-    }
-
-    @Test
-    public void testResolve() throws Exception {
-
-    }
 }
