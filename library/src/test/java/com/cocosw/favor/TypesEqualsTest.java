@@ -1,6 +1,5 @@
 package com.cocosw.favor;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
@@ -19,14 +18,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
+ */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Class.class, Type.class})
 public class TypesEqualsTest {
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
 
     @Test
     public void testEquals_null_null() throws Exception {
@@ -34,7 +31,7 @@ public class TypesEqualsTest {
         boolean result = Types.equals(null, null);
 
         //then
-        assertTrue(result);
+        assertTrue("null must be equal to null", result);
     }
 
     @Test
@@ -43,19 +40,19 @@ public class TypesEqualsTest {
         boolean result = Types.equals(Integer.class, Long.class);
 
         //then
-        assertFalse(result);
+        assertFalse("Integer class must not be equal to Long", result);
 
         //when
         result = Types.equals(Integer.class, Integer.class);
 
         //then
-        assertTrue(result);
+        assertTrue("Integer class must be equal to itself", result);
 
         //when
         result = Types.equals(Object.class, Object.class);
 
         //then
-        assertTrue(result);
+        assertTrue("Object class must be equal to itself", result);
     }
 
     @Test
@@ -64,7 +61,7 @@ public class TypesEqualsTest {
         boolean result = Types.equals(ParameterizedType.class, GenericArrayType.class);
 
         //then
-        assertFalse(result);
+        assertFalse("ParameterizedType and GenericArrayType must not be equal", result);
     }
 
     @Test
@@ -199,12 +196,13 @@ public class TypesEqualsTest {
         when(object1.equals(object2)).thenReturn(true);
         when(object2.equals(object1)).thenReturn(true);
 
-        assertTrue(object1.equals(object2));
+        assertTrue("Pre-asserting that object1 is equal to object2 through equals check", object1.equals(object2));
 
         //when
         boolean result = Types.equals(object1, object2);
 
         //then
-        assertFalse(result);
+        assertFalse("Even though object1 and object2 are equal as checked in the pre-assertion, " +
+                "Result must be false because MyNewType is not a supported type", result);
     }
 }

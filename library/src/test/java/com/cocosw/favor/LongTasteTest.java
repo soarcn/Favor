@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class LongTasteTest {
 
@@ -35,7 +35,7 @@ public class LongTasteTest {
         Object getResult = LongTaste.get();
 
         //then
-        assertEquals(100l, getResult);
+        assertEquals("get() must return 100l as configured in sharedPreferences", 100l, getResult);
     }
 
     @Test

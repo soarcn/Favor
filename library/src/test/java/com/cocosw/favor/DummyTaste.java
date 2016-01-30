@@ -3,7 +3,7 @@ package com.cocosw.favor;
 import android.content.SharedPreferences;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class DummyTaste extends Taste {
 
