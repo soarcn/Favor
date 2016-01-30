@@ -1,6 +1,5 @@
 package com.cocosw.favor;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -19,14 +18,12 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
+ */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Class.class})
 public class TypesTest {
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
 
     @Test
     public void testGetRawType_ParameterizedType() throws Exception {
@@ -38,8 +35,7 @@ public class TypesTest {
         Class<?> result = Types.getRawType(object);
 
         //then
-        assertEquals(ParameterizedType.class, result);
-
+        assertEquals("Raw type must be ParameterizedType", ParameterizedType.class, result);
     }
 
     @Test
@@ -52,7 +48,7 @@ public class TypesTest {
         Class<?> result = Types.getRawType(object);
 
         //then
-        assertEquals(Array.newInstance(GenericArrayType.class, 0).getClass(), result);
+        assertEquals("Raw type must be Array's class for GenericArrayType", Array.newInstance(GenericArrayType.class, 0).getClass(), result);
     }
 
     @Test
@@ -64,7 +60,7 @@ public class TypesTest {
         Class<?> result = Types.getRawType(object);
 
         //then
-        assertEquals(Object.class, result);
+        assertEquals("Raw type for the TypeVariable must be Object", Object.class, result);
     }
 
     @Test
@@ -78,7 +74,8 @@ public class TypesTest {
         Class<?> result = Types.getRawType(object);
 
         //then
-        assertEquals(ParameterizedType.class, result);
+        assertEquals("RawType for WildcardType must be the first element of the upperBounds",
+                ParameterizedType.class, result);
     }
 
     @Test
@@ -97,6 +94,6 @@ public class TypesTest {
         boolean result = Types.equals(null, null);
 
         //then
-        assertTrue(result);
+        assertTrue("equals must return true for null and null values", result);
     }
 }

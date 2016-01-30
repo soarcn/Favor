@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class StringTasteTest {
 
@@ -22,7 +22,7 @@ public class StringTasteTest {
     private Taste.StringTaste stringTaste;
 
     @Before
-    public void setup(){
+    public void setup() {
         sharedPreferences = Mockito.mock(SharedPreferences.class);
         Mockito.when(sharedPreferences.getString("key", "default-value-first")).thenReturn("return-val-for-key-and-valueString");
         editor = Mockito.mock(SharedPreferences.Editor.class);

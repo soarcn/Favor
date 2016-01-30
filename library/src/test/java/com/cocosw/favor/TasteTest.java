@@ -12,7 +12,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class TasteTest {
 
@@ -25,7 +25,7 @@ public class TasteTest {
     private DummyTaste dummyTaste;
 
     @Before
-    public void setup(){
+    public void setup() {
         sharedPreferences = mock(SharedPreferences.class);
         Mockito.when(sharedPreferences.getString("key", "default-value-first")).thenReturn("return-val-for-key-and-valueString");
         editor = mock(SharedPreferences.Editor.class);

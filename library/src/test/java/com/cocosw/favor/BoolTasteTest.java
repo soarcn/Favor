@@ -7,9 +7,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class BoolTasteTest {
 
@@ -22,7 +23,7 @@ public class BoolTasteTest {
     private Taste.BoolTaste BoolTaste;
 
     @Before
-    public void setup(){
+    public void setup() {
         sharedPreferences = Mockito.mock(SharedPreferences.class);
         Mockito.when(sharedPreferences.getBoolean("key", true)).thenReturn(true);
         editor = Mockito.mock(SharedPreferences.Editor.class);
@@ -35,7 +36,7 @@ public class BoolTasteTest {
         Object getResult = BoolTaste.get();
 
         //then
-        assertEquals(true, getResult);
+        assertEquals("get() must return true as configured in sharedPreferences", true, getResult);
     }
 
     @Test

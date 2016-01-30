@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.*;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class IntTasteTest {
 
@@ -35,7 +35,7 @@ public class IntTasteTest {
         Object getResult = intTaste.get();
 
         //then
-        assertEquals(100, getResult);
+        assertEquals("get() must return 100 as configured in sharedPreferences", 100, getResult);
     }
 
     @Test

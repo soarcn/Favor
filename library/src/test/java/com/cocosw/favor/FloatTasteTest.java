@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com @link <a href="https://github.com/mfarid">mfarid</a>
  */
 public class FloatTasteTest {
 
@@ -35,7 +35,7 @@ public class FloatTasteTest {
         Object getResult = FloatTaste.get();
 
         //then
-        assertEquals(100f, getResult);
+        assertEquals("get() must return 100f as configured in sharedPreferences", 100f, getResult);
     }
 
     @Test
