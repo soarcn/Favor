@@ -23,6 +23,7 @@ android:
 
 script:
   - ./gradlew assemble lint
+  - ./gradlew test
 
 
 after_script:
