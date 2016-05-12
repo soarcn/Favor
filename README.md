@@ -37,7 +37,7 @@ public interface Account {
 }
 ```
 
-2 The FavorAdatper class generates an implementation of the interface.
+2 The FavorAdapter class generates an implementation of the interface.
 
 ```java 
 account = new FavorAdapter.Builder(getContext()).build().create(Account.class);
