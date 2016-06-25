@@ -20,6 +20,13 @@ import static android.os.SystemClock.sleep;
  */
 public class ApplicationTest extends ApplicationTestCase<Application> {
 
+    private static final String SYDNEY = "Sydney";
+    private static final String PASSWORD = "Password";
+    private static final String EXTRA = "extra";
+    private static final String ALIVE = "alive";
+    private static final String UNSUPPORTED_TYPE = "Unsupported type";
+    private static final String UNSUPPORTED_TYPE_FAILURE = "Fail to check unsupported value type";
+
     private Profile profile;
 
     public ApplicationTest() {
@@ -34,8 +41,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testGetValue() {
-        setSP("city", "Sydney");
-        Assert.assertEquals("Sydney", profile.city());
+        setSP("city", SYDNEY);
+        Assert.assertEquals(SYDNEY, profile.city());
     }
 
     public void testPutValue() {
@@ -47,8 +54,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     public void testDefaultValue() {
         remove("city");
-        Assert.assertEquals("Sydney", profile.city());
-        remove("alive");
+        Assert.assertEquals(SYDNEY, profile.city());
+        remove(ALIVE);
         Assert.assertEquals(true, profile.alive());
         remove("height");
         Assert.assertEquals(170, profile.getHeight());
@@ -65,11 +72,11 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testBoolValue() {
-        remove("alive");
+        remove(ALIVE);
         Assert.assertEquals(true, profile.alive());
         profile.isAlive(false);
         Assert.assertEquals(false, profile.alive());
-        Assert.assertEquals(false, sp().getBoolean("alive", true));
+        Assert.assertEquals(false, sp().getBoolean(ALIVE, true));
     }
 
     public void testFloatValue() {
@@ -82,33 +89,33 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
         adapter.enableLog(true);
         Account account = adapter.create(Account.class);
-        remove("password");
+        remove(PASSWORD);
         remove("username");
         assertEquals("No Name", account.getUserName());
         Assert.assertNull(account.getPassword());
-        account.setPassword("Password");
-        assertEquals("Password", account.getPassword());
-        remove("extra");
-        assertEquals(null, sp().getString("extra", null));
-        account.setExtraPassword("extra");
-        assertEquals("extra", sp().getString("extra", null));
+        account.setPassword(PASSWORD);
+        assertEquals(PASSWORD, account.getPassword());
+        remove(EXTRA);
+        assertEquals(null, sp().getString(EXTRA, null));
+        account.setExtraPassword(EXTRA);
+        assertEquals(EXTRA, sp().getString(EXTRA, null));
         assertNull(sp().getString("extrapassword", null));
     }
 
     public void testPrefix() {
         Account account = new FavorAdapter.Builder(getContext()).build().create(Account.class);
-        remove("password");
+        remove(PASSWORD);
         assertNull(account.getPassword());
-        account.setPassword("Password");
-        assertEquals("Password", account.getPassword());
+        account.setPassword(PASSWORD);
+        assertEquals(PASSWORD, account.getPassword());
 
         remove("_password");
         FavorAdapter favor = new FavorAdapter.Builder(getContext()).prefix("_").build();
         Account account1 = favor.create(Account.class);
         assertNull(account1.getPassword());
-        account1.setPassword("Password");
-        assertEquals("Password", account1.getPassword());
-        assertEquals("Password", sp().getString("_password", null));
+        account1.setPassword(PASSWORD);
+        assertEquals(PASSWORD, account1.getPassword());
+        assertEquals(PASSWORD, sp().getString("_password", null));
     }
 
     public void testRxSharePreference() {
@@ -159,14 +166,14 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             public void run() {
                 wrong.testUnsupportedType(null);
             }
-        }, "Unsupported type", "Fail to check unsupported value type");
+        }, UNSUPPORTED_TYPE, UNSUPPORTED_TYPE_FAILURE);
 
         assertException(new Runnable() {
             @Override
             public void run() {
                 wrong.testUnsupportedType();
             }
-        }, "Unsupported type", "Fail to check unsupported value type");
+        }, UNSUPPORTED_TYPE, UNSUPPORTED_TYPE_FAILURE);
 
 
         assertException(new Runnable() {
@@ -174,7 +181,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             public void run() {
                 wrong.testUnsupportedType(null);
             }
-        }, "Unsupported type", "Fail to check unsupported value type");
+        }, UNSUPPORTED_TYPE, UNSUPPORTED_TYPE_FAILURE);
 
         assertException(new Runnable() {
             @Override
