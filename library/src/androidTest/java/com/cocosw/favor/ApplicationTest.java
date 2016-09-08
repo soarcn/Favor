@@ -259,6 +259,20 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertEquals("http://www.cocosw.com", img.url);
     }
 
+    public void testRxSerializableObject() {
+        remove("avatar");
+        assertNull(profile.avatar().get());
+        Image avatar = new Image();
+        avatar.url = "http://www.cocosw.com";
+        avatar.format = "png";
+        profile.avatar().set(avatar);
+
+        Image img = profile.avatar().get();
+        assertNotNull(img);
+        assertEquals("png", img.format);
+        assertEquals("http://www.cocosw.com", img.url);
+    }
+
 
     public void testNegativeNumber() {
         FavorAdapter adapter = new FavorAdapter.Builder(getContext()).build();
