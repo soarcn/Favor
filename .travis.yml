@@ -15,7 +15,9 @@ before_install:
 
 android:
   components:
-    - build-tools-23.0.1
+    - tools
+    - platform-tools
+    - build-tools-24.0.0
     - extra-android-m2repository
     - android-23
   licenses:
@@ -34,3 +36,7 @@ after_script:
     - adb shell input keyevent 82 &
     # now run the tests
     - ./gradlew connectedCheck
+
+cache:
+  directories:
+    - $HOME/.m2
