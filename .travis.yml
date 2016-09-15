@@ -8,7 +8,7 @@ env:
     - ADB_INSTALL_TIMEOUT=10
 
 jdk:
- - oraclejdk7
+ - oraclejdk8
 
 before_install:
  - chmod +x gradlew
@@ -17,11 +17,12 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-24.0.0
-    - extra-android-m2repository
+    - build-tools-24.0.2
     - android-24
-  licenses:
-    - android-sdk-license-5be876d5
+    - extra-android-support
+    - extra-android-m2repository
+    - extra-google-m2repository
+
 
 script:
   - ./gradlew assemble lint
