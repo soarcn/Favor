@@ -34,7 +34,7 @@ abstract class Taste {
     }
 
     @SuppressLint("CommitPrefEdits")
-    protected void save(SharedPreferences.Editor editor, boolean commit) {
+    void save(SharedPreferences.Editor editor, boolean commit) {
         if (!commit || Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
             editor.apply();
         else
@@ -206,11 +206,17 @@ abstract class Taste {
         @SuppressLint("CommitPrefEdits")
         @Override
         SharedPreferences.Editor editor(Object object) {
+            return put(sp.edit(), object);
+        }
+
+        @SuppressLint("CommitPrefEdits")
+        SharedPreferences.Editor put(SharedPreferences.Editor editor, Object object) {
             byte[] bytes = serialize(object);
             if (bytes != null)
-                return sp.edit().putString(key, Base64.encodeToString(bytes, Base64.DEFAULT));
+                return editor.putString(key, Base64.encodeToString(bytes, Base64.DEFAULT));
             return null;
         }
+
     }
 
     static class EmptyTaste extends Taste {
