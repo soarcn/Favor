@@ -74,6 +74,9 @@ public interface Profile {
     Preference<Long> distance();
 
     @Favor
+    Preference<Image> avatar();
+
+    @Favor
     Image image();
 
     @Favor

@@ -1,7 +1,9 @@
 package com.cocosw.favor;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 
 import com.f2prateek.rx.preferences.Preference;
@@ -40,6 +42,26 @@ class MethodInfo {
     private Taste taste;
     private boolean commit;
     private Type FavorType;
+    private SerializableAdapter serializableAdapter;
+    
+    private class SerializableAdapter<T extends Serializable> implements Preference.Adapter<T> {
+        @Override
+        public T get(@NonNull String key, @NonNull SharedPreferences preferences) {
+            String gets = preferences.getString(key, null);
+            if (TextUtils.isEmpty(gets))
+                return null;
+            byte[] bytes = Base64.decode(gets, Base64.DEFAULT);
+            return (T)Taste.SerializableTaste.deserialize(bytes);
+        }
+
+        @Override
+        public void set(@NonNull String key, @NonNull T value, @NonNull SharedPreferences.Editor editor) {
+            byte[] bytes = Taste.SerializableTaste.serialize(value);
+            if (bytes != null) {
+                editor.putString(key, Base64.encodeToString(bytes, Base64.DEFAULT));
+            }
+        }
+    }
 
     MethodInfo(Method method, SharedPreferences sp, String prefix, boolean allFavor) {
         this.method = method;
@@ -48,6 +70,7 @@ class MethodInfo {
         this.allFavor = allFavor;
         responseType = parseResponseType();
         isObservable = (responseType == ResponseType.OBSERVABLE);
+        serializableAdapter = new SerializableAdapter();
     }
 
     private static Type getParameterUpperBound(ParameterizedType type) {
@@ -143,6 +166,8 @@ class MethodInfo {
                 rxPref = rx.getLong(key, defaultValues[0] == null ? null : Long.valueOf(defaultValues[0]));
             } else if (responseObjectType == Boolean.class) {
                 rxPref = rx.getBoolean(key, defaultValues[0] == null ? null : Boolean.valueOf(defaultValues[0]));
+            } else if (Serializable.class.isAssignableFrom(Types.getRawType(responseObjectType))) {
+                rxPref = rx.getObject(key, defaultValues[0] == null ? null : Taste.SerializableTaste.deserialize(defaultValues[0].getBytes()), serializableAdapter);
             } else {
 //                        Class returnTypeClass = Types.getRawType(returnType);
 //                        if (returnTypeClass == Set.class) {
