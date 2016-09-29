@@ -3,6 +3,9 @@ apply from: 'https://raw.githubusercontent.com/soarcn/gradle/master/maven_push.g
 
 
 android {
+    defaultConfig {
+        consumerProguardFiles 'proguard-rules.pro'
+    }
     buildTypes {
         debug {
             // output coverage with ./gradlew clean build createDebugCoverageReport

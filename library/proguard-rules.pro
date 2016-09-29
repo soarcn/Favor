@@ -15,3 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn com.cocosw.favor.** { *; }
+-keep class com.cocosw.favor.** { *; }
