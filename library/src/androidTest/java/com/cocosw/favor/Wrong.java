@@ -3,8 +3,6 @@ package com.cocosw.favor;
 import com.f2prateek.rx.preferences.Preference;
 
 /**
- * NBN Atlas Wayfinder
- * <p/>
  * Created by kai on 2/10/15.
  */
 @AllFavor
