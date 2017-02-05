@@ -60,7 +60,7 @@ public interface Account {
 }
 ```
 
-@Favor @Default
+@Favor
 -----
 
 ```java
@@ -81,6 +81,17 @@ And you can simplify it, Favor will extract the key from the method name
     @Favor
     @Default("Sydney")
     String city();
+```
+
+@Default
+------
+
+```java
+    @Default("18")
+    int age();
+    
+    @Default("true")
+    boolean alive();
 ```
 
 @Commit
@@ -138,13 +149,7 @@ Proguard
 Contribute
 =======
 
-- Feel free to fork it
-
-About me
-=======
-
-I'm Kai, an 32 years old android developer living in Sydney.
-
+- Feel free to send your pull request to me.
 
 License
 =======
